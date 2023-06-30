@@ -1,0 +1,4 @@
+Pandas==1.4.2
+NumPy==1.22.3
+TensorFlow==2.12.0
+Matplotlib==3.5.3
