@@ -65,8 +65,8 @@ if not number_of_images(df) ==  number_of_images(train_df) + number_of_images(te
   print("error in train test split procedure")
   sys.exit()
 
-# Merge emotions is specific to this kaggle dataframe and aims to the two classes anger and disgust into just one emotion as these two emotions are under 
-# represented
+# Merge emotions is Very specific to this kaggle dataframe and aims to the two classes anger and disgust into just one emotion as these two emotions  
+# are underrepresented
 merge_emotions = True
 
 if merge_emoions ==True:
