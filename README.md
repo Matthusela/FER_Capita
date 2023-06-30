@@ -10,4 +10,5 @@ dataset_cleaning.py deals with cleaning the kaggle dataset in preparation for mo
 Currently model validation accuracy is peaking at 50% which is underwhelming
 
 To download all the modules used and matching versions run following pip command from python command line in folder where project is kept
+
 pip install -r requirementsFER.txt 
