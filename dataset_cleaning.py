@@ -39,6 +39,6 @@ df["pixels_mat"] = pixels_mat
 
 df.info()
 # Would now Pickle the dataframe so these steps don't have to be repeated
-# df.to_pickle("NAME.pkl")
+df.to_pickle("NAME.pkl")
 
 
