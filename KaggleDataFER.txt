@@ -1,0 +1,6 @@
+Please download dataset from:
+https://www.kaggle.com/datasets/debanga/facial-expression-recognition-challenge
+
+The CSV with useful information should be the \icml_face_data.csv file or something along those lines. 
+
+This is the file that wants to be fed into the dataset_cleaning.py file
