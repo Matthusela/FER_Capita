@@ -129,28 +129,10 @@ for i in range(15):
     ModelDic[name] = model
 
 for i in range(20):
-    learn = 0.001
+    learn = 0.01
     model = Process(train_data = X_train,train_targets =Y_train,
                    test_data = X_test,test_targets = Y_test,
                    learning_rate = learn , epoch_iterations = 15,randomised = True)
     name = "ModelNo{}rate{}".format(i,learn)
     ModelDic[name] = model
 
-for mod in ModelDic.values():
-    print(mod[0].summary())
-    
-    
-simple = tf.keras.models.Sequential([
-    tf.keras.layers.Conv2D(32, (2, 2), activation='relu', input_shape=(48, 48, 1)),
-    tf.keras.layers.MaxPooling2D((2, 2)),
-    tf.keras.layers.Conv2D(32, (3, 3), activation='relu'),
-    tf.keras.layers.MaxPooling2D((2, 2)),
-    tf.keras.layers.Conv2D(32, (4, 4), activation='relu'),
-    tf.keras.layers.MaxPooling2D((2, 2)),
-    tf.keras.layers.Flatten(),
-    tf.keras.layers.Dense(128, activation='relu'),
-    tf.keras.layers.Dense(NumberClass, activation='softmax')
-])
-simple = config_model(simple,0.001)
-fit_simple = fit_model(X_train, Y_train, X_test, 
-                       Y_test, 15, simple)
