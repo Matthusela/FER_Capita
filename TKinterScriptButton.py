@@ -15,20 +15,21 @@ import matplotlib.pyplot as plt
 import numpy as np
 #from Model1 import emotion_dict
 import os
-from dataset_cleaning import number_of_images, image_dimension
-from Model1 import random_sample, gs_to_rgb
-
-df = pd.read_pickle("df_1.pkl")
+#from dataset_cleaning import number_of_images, image_dimension
+#from Model1 import random_sample, gs_to_rgb
+#os.chdir("FER_Capita")
+print(os.getcwd())
+#df = pd.read_pickle("df_1.pkl")
 
 with open("emo_dict.pkl", "rb") as file:
     emotion_dict = pickle.load(file)
 
-IMDIM = image_dimension(df)
-NUMCLASS = df.emotion.nunique()
+IMDIM = 48
+NUMCLASS = len(emotion_dict)
 # Access the boolean values
 RGB_or_GS = True
 OneHot = True
-dir_name = "ModelsRGB{}OneHot{}".format(str(RGB_or_GS), str(OneHot))
+#dir_name = "ModelsRGB{}OneHot{}".format(str(RGB_or_GS), str(OneHot))
 dir_name = "TrainedModelsGS"
 print(dir_name)
 print(emotion_dict)
