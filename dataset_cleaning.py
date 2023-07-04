@@ -1,4 +1,7 @@
 import pandas as pd
+import numpy as np
+import math
+import pickle
 
 # Read kaggle data set from wherever saved
 df = pd.read_csv(r"C:\Users\matt8\Downloads\faceset1\icml_face_data.csv")
@@ -37,8 +40,25 @@ num_dim = number_of_images(df)
 pixels_mat =  df.pixels_list.apply(lambda x : x.reshape(inp_dim,inp_dim))
 df["pixels_mat"] = pixels_mat
 
+merge_emotions = True
+
+if merge_emotions == True:
+    if len(emotion_dict) == 7:
+      df.loc[df.emotion == 1,"emotion"] = 0
+      df["emotion"] = df.emotion.map({0:0,2:1,3:2,4:3,5:4,6:5})
+      new_emotion = {}
+      emotion_dict.pop(1)
+      for key,value in enumerate(emotion_dict):
+          new_emotion[key] = emotion_dict[value]
+      emotion_dict = new_emotion
+
+
+df.to_pickle("df_1.pkl")
+with open("emo_dict.pkl", "wb") as file:
+    pickle.dump(emotion_dict, file)
+
 df.info()
 # Would now Pickle the dataframe so these steps don't have to be repeated
-df.to_pickle("NAME.pkl")
+#df.to_pickle("NAME.pkl")
 
 

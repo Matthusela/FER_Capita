@@ -14,9 +14,8 @@ from tensorflow.keras import models, layers
 from tensorflow.keras import optimizers
 
 # Bringing dataframe in from dataset_cleaning.py
-import dataset_cleaning
-df = dataset_cleaning.df
-from dataset_cleaning import number_of_images,image_dimension
+
+from dataset_cleaning import number_of_images,image_dimension,emotion_dict,df
 
 
 print("df produced")
@@ -57,80 +56,38 @@ def gs_to_rgb(list_of_gs_imgs, output = False):
   if output == True:
     return stacks
     
-  
-
-###############################                    making training test split and necessary presteps             ###############################
-#should images be "greyscale" or "rgb"
-rbg_or_greyscale = "greyscale"
-if rbg_or_greyscale == "rgb":
-  gs_to_rgb(np.stack(df.pixels_mat.values), output = False)
-  
-# Merge emotions is Very specific to this kaggle dataframe and aims to the two classes anger and disgust into just one emotion as these two emotions  
-# are underrepresented
-
-merge_emotions = True
-
-if merge_emotions ==True:
-  from dataset_cleaning import emotion_dict
-  df.loc[df.emotion == 1,"emotion"] = 0
-  df["emotion"] = df.emotion.map({0:0,2:1,3:2,4:3,5:4,6:5})
-  new_emotion = {}
-  emotion_dict.pop(1)
-  for key,value in enumerate(emotion_dict):
-      new_emotion[key] = emotion_dict[value]
-  emotion_dict = new_emotion
-
 NumberClass = len(emotion_dict)
-train_df,test_df,train_labels,test_labels = random_sample(df,train_perc=0.9,random=True)
-Y_train = train_labels.values.reshape(-1,1)
-Y_test = test_labels.values.reshape(-1,1)
-
-if not ((train_labels.index ==  train_df.index).all(),(test_labels.index ==  test_df.index).all()) == (True,True):
-  print("error in train test split procedure")
-  sys.exit()
-if not number_of_images(df) ==  number_of_images(train_df) + number_of_images(test_df):
-  print("error in train test split procedure")
-  sys.exit()
-
-train_size = number_of_images(train_df)
-test_size = number_of_images(test_df)
-pixel_dim = image_dimension(train_df)
-  
-# should the class variables be converted from ordinal representation to OneHot labels.
-one_hot_labels = True
-
-if one_hot_labels == True:
-  test_labels = np.squeeze(tf.one_hot(Y_test,NumberClass))
-  Y_test = np.squeeze(test_labels)
-  train_labels = np.squeeze(tf.one_hot(Y_train,NumberClass))
-  Y_train = np.squeeze(train_labels)
-  if not (number_of_images(train_df),NumberClass) == train_labels.shape:
-    print(" One hot encoding fail")
-    sys.exit()
-  if not (number_of_images(test_df),NumberClass) == test_labels.shape:
-    print(" One hot encoding fail")
-    sys.exit()
-
-#should images be "greyscale" or "rgb"
-if rbg_or_greyscale == "rgb":
-  gs_to_rgb(np.stack(df.pixels_mat.values), output = False)
-  X_train = np.stack(train_df.preprocessed_images.values)/255
-  X_test = np.stack(test_df.preprocessed_images.values)/255
-else:
-  X_train = np.stack(train_df.pixels_mat.values).reshape(train_size,pixel_dim,pixel_dim,1)/255
-  X_test = np.stack(test_df.pixels_mat.values).reshape(test_size,pixel_dim,pixel_dim,1)/255
 
 
 
+def get_sets(df,one_hot,rgb):
+    if rgb == "rgb":
+      gs_to_rgb(np.stack(df.pixels_mat.values), output = False)
+    train_df,test_df,train_labels,test_labels = random_sample(df,True,0.9,True)
+    train_size = number_of_images(train_df)
+    test_size = number_of_images(test_df)
+    pixel_dim = image_dimension(df)
+    Y_train = train_labels.values.reshape(-1,1)
+    Y_test = test_labels.values.reshape(-1,1)
+    if one_hot == True:
+        test_labels = np.squeeze(tf.one_hot(Y_test,NumberClass))
+        Y_test = np.squeeze(test_labels)
+        train_labels = np.squeeze(tf.one_hot(Y_train,NumberClass))
+        Y_train = np.squeeze(train_labels)
+    if rgb == "rgb":
+      #gs_to_rgb(np.stack(df.pixels_mat.values), output = False)
+      X_train = np.stack(train_df.preprocessed_images.values)/255
+      X_test = np.stack(test_df.preprocessed_images.values)/255
+    else:
+      X_train = np.stack(train_df.pixels_mat.values).reshape(train_size,pixel_dim,pixel_dim,1)/255
+      X_test = np.stack(test_df.pixels_mat.values).reshape(test_size,pixel_dim,pixel_dim,1)/255
+    shape = X_train.shape
+    return X_train,Y_train,X_test,Y_test, shape
 ############################################             initiating model set up           ###########################################
 
 
-InputShape = list(X_train.shape)
-InputShape = np.array(InputShape)
 
    
   ############################################             instantiating the model           ###########################################
-print(InputShape)
-#ml_call =  gen_model(train_data = X_train, labels = Y_train)
-#ml = config_model(ml_call,0.01,False)
-#fit_ml = fit_model(X_train,Y_train,X_test,Y_test,2,ml)
+
+
