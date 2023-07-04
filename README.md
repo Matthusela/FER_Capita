@@ -15,7 +15,12 @@ pip install -r requirementsFER.txt
 
 Flow: 
 1) Follow the link in KaggleDataFER 
-2) install the requirements from requirements file - fairly standard modules - run thi sfile in a python command line
+2) install the requirements from requirements file - fairly standard modules - run this file in a python command line
 3) dataset_cleaning.py to Model1.py to RandomModels.py - hopefully just running RandomModels.py will be sufficient - best to run in Spyder.
 4) RandomModels creates a bunch of CNNs to classify facial expression - individually these models are not particularly good so the hope is that running them as an ensemble will improve accuracy.
-5) Prediction and Interfacing are WIPs
+5) The MakeModelsCLI.py file should be run in anaconda command line - navigate to this directory and run the command: python MakeModelsCLI.py --OneHot
+6) Pressing enter should run the model - fitting the models will take several hours. After python MakeModelsCLI.py there are two options: can either add the --OneHot key like above and can also add --RGB key: adding --RGB will train the models to learn images in RGB rather than greyscale - not including this command will keep models in greyscale, --OneHot tag sets the class variables to be represented in a One hot format which should improve accuracy.
+7) As models take a long time to train there are some preloaded models in this repository.
+8) These models can be used in the TKinterScriptButton.py file - make sure models are stored in a folder and that folder name is correctly put into the script.
+9) Running the TKinterScriptButton.py should launch a face detection window
+   
