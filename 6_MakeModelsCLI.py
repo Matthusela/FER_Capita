@@ -6,6 +6,9 @@ Created on Mon Jul  3 22:59:44 2023
 """
 
 
+# This file is set up to be run from a python enabled command line, this file simply activates the Model_Files() function and begins the process of
+# fitting models with functionality to configure one-hot and GreyScale/RGB settings. To run in spyder just remove all of the arg parser lines and specify
+# oneHot and RGB_or_GS in spyder as Booleans
 
 import argparse
 from RandomModels import Model_Files
