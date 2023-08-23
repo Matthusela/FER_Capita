@@ -38,7 +38,7 @@ the requirements file works for me but when asking friends to check the code flo
 5) RandomModels creates a bunch of CNNs to classify facial expression - individually these models are not particularly good so the hope is that running them as an ensemble will improve accuracy.
 6) The MakeModelsCLI.py file should be run in anaconda command line - navigate to this project directory and run the command: python MakeModelsCLI.py --OneHot
 7) Pressing enter should run the model - fitting the models will take several hours. After python MakeModelsCLI.py there are two options: can either add the --OneHot key like above and can also add --RGB key: adding --RGB will train the models to learn images in RGB rather than greyscale - not including this command will keep models in greyscale, --OneHot tag sets the class variables to be represented in a One hot format which should improve accuracy. AVOID --RGB PROBABLY BROKEN WHEN USING THESE MODELS WITH LATER FILES
-8) As models take a long time to train there are some preloaded models in this repository stored in: .
+8) As models take a long time to train there are some preloaded models in this repository stored in: AugmentModels - as GitHub has a file size limit can only upload a few files with few model parameters - more parameter models are too large - all tensorflow models should have .h5 extension
 9) These models can be used in the TKinterScriptButton.py file - make sure models are stored in a folder and that folder name is correctly put into the script.
 10) Running the TKinterScriptButton.py should launch a face detection window - press start detection and it should display front camera video feed!
 
