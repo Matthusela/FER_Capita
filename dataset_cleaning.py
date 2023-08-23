@@ -1,9 +1,8 @@
 import pandas as pd
 import numpy as np
 import math
-import pickle
-
-# Read kaggle data set from wherever saved
+from df_functions import image_dimension, number_of_images
+# Read kaggle data set from wherever on your computer saved
 df = pd.read_csv(r"C:\Users\matt8\Downloads\faceset1\icml_face_data.csv")
 
 # Ignore usage column
@@ -16,22 +15,7 @@ emotion_dict = {0:"Angry", 1:"Disgust", 2:"Fear", 3:"Happy", 4:"Sad", 5:"Surpris
 df.columns = ["emotion","pixels"]
 df["pixels_list"] = df.pixels.map(lambda x: np.fromstring(x, dtype=np.uint16, sep=' '))
 
-# Quickly defining two functions to help ensure images have been pixelated properly
-def image_dimension(data_frame):
-    pxls = data_frame.pixels_list.apply(len)
-    if pxls.isin(np.array(pxls)).all() != True:
-        return "Image pixelation is not consistent across images"
-    else:
-        length = np.array(pxls,dtype =np.uint16)[0]
-        dim = math.sqrt(length)
-        if dim%1 == 0:
-            return int(dim)
-        else:
-            return "Image pixelation has not produced a square image"
-        
-def number_of_images(data_frame):
-    return len(data_frame.index)
-
+# Functions now defined in df_functions as less clunky having them in separate file
 inp_dim = image_dimension(df)
 num_dim = number_of_images(df)
 
@@ -39,26 +23,9 @@ num_dim = number_of_images(df)
 # Reflecting the matrix is done through:
 pixels_mat =  df.pixels_list.apply(lambda x : x.reshape(inp_dim,inp_dim))
 df["pixels_mat"] = pixels_mat
-
-merge_emotions = True
-
-if merge_emotions == True:
-    if len(emotion_dict) == 7:
-      df.loc[df.emotion == 1,"emotion"] = 0
-      df["emotion"] = df.emotion.map({0:0,2:1,3:2,4:3,5:4,6:5})
-      new_emotion = {}
-      emotion_dict.pop(1)
-      for key,value in enumerate(emotion_dict):
-          new_emotion[key] = emotion_dict[value]
-      emotion_dict = new_emotion
-
-
-df.to_pickle("df_1.pkl")
-with open("emo_dict.pkl", "wb") as file:
-    pickle.dump(emotion_dict, file)
-
-df.info()
-# Would now Pickle the dataframe so these steps don't have to be repeated
-#df.to_pickle("NAME.pkl")
+# Unnecessary info so unnecessary memory usage.
+df = df.drop(["pixels","pixels_list"],axis=1)
+# Necessary for Augmentation sheet
+emotions = df.emotion
 
 
